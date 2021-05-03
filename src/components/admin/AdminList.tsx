@@ -17,6 +17,7 @@ interface IProps {
 const AdminList: React.FC<IProps & RouteComponentProps> = (props): any => {
   const history = useHistory();
   const { applicationID } = props.data;
+  const { givenName="", familyName="" } = props.data.payload
 
   const viewApplication = () => {
     history.push({
@@ -30,7 +31,7 @@ const AdminList: React.FC<IProps & RouteComponentProps> = (props): any => {
   <Card style={{margin: '10px 0'}}>
     <Card.Body>
       <Card.Title>
-          Application ID: { applicationID }
+          Application ID: { applicationID } (<span style={{fontWeight:400}}>{givenName} {familyName}</span>)
       </Card.Title>
       <Button onClick={viewApplication}> View more </Button>
     </Card.Body>
