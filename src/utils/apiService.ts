@@ -1,5 +1,5 @@
 import LOCAL_STORAGE_KEY from 'constants/localstorage';
-import {cloudWalletApi, issuerApi, verifierApi} from 'utils/api';
+import {cloudWalletApi, issuerApi} from 'utils/api';
 import {endpoints} from 'constants/endpoints';
 import {
   GetSavedCredentialsOutput,
@@ -7,7 +7,7 @@ import {
   SignCredentialInput,
   SignCredentialOutput,
   VCBuildUnsignedInput,
-  VCBuildUnsignedOutput, VerifyCredentialInput, VerifyCredentialOutput,
+  VCBuildUnsignedOutput
 } from 'utils/apis';
 
 /**
