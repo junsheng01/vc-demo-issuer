@@ -78,16 +78,6 @@ export default class ApiService {
   }
 
   /**
-   * Method for verifying multiple VCs.
-   * Endpoint info: https://affinity-verifier.staging.affinity-project.org/api-docs/#/Verifier/VerifyCredentials.
-   * */
-  static async verifyVC(input: VerifyCredentialInput) {
-    const {data} = await verifierApi.post<VerifyCredentialOutput>(endpoints.VERIFIER_VERIFY_VCS, input)
-
-    return data;
-  }
-
-  /**
    * Method for storing signed VCs.
    * Endpoint info: https://cloud-wallet-api.staging.affinity-project.org/api-docs/#/Wallet/StoreCredentials.
    * */

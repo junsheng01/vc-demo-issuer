@@ -80,21 +80,6 @@ describe('ApiService methods', () => {
     expect(mockCloudWalletApiPost).toHaveBeenCalledWith(endpoints.WALLET_SIGN_CREDENTIALS, input)
   })
 
-  test('verifyVC method', async () => {
-    mockVerifierApiPost.mockImplementation(() => Promise.resolve({
-      errors: [],
-      isValid: true
-    }));
-
-    const input = {
-      verifiableCredentials: [signedDrivingLicenseVC]
-    }
-
-    await ApiService.verifyVC(input)
-
-    expect(mockVerifierApiPost).toHaveBeenCalledWith(endpoints.VERIFIER_VERIFY_VCS, input)
-  })
-
   test('storeSignedVCs method', async () => {
     mockCloudWalletApiPost.mockImplementation(() => Promise.resolve({
       errors: [],
