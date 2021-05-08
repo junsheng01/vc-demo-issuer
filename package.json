@@ -13,6 +13,7 @@
     "aws-sdk": "^2.891.0",
     "axios": "^0.21.1",
     "dotenv": "^8.2.0",
+    "emailjs-com": "^2.6.4",
     "jwt-decode": "^3.1.2",
     "randomstring": "^1.1.5",
     "react": "^17.0.2",

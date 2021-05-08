@@ -13,7 +13,10 @@ const envConfig = {
   accessApiKey: process.env.REACT_APP_API_KEY_HASH,
   accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY_ID,
   wallet_url: process.env.REACT_APP_WALLET_URL || 'http://localhost:3001',
-  secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY
+  secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY,
+  emailJsServiceID: process.env.REACT_APP_EMAIL_JS_SERVICE_ID,
+  emailJsTemplateID: process.env.REACT_APP_EMAIL_JS_TEMPLATE_ID,
+  emailJsUserID: process.env.REACT_APP_EMAIL_JS_USER_ID,
 };
 
 export default envConfig
