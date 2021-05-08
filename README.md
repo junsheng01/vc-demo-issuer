@@ -40,7 +40,7 @@ In our Issuer application, once the issuer has approved an application, the appl
 
 In this application we have used `no-reply@vc-generator.com` as our primary account to send emails to the holders. You will have to update it with your email address. Also make sure that you register that email and verify it before using. 
 
-`Note:` While generating you access key and while registering you email, make sure that you have the same aws-region selected.
+`Note:` While generating your access key and while registering your email, make sure that you have the same aws-region selected.
 
 
 ### Firebase
