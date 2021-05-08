@@ -29,18 +29,6 @@ Before you could use our API and SDK services, you would have to register to get
 2. Register for an account
 3. Store the `API Key` and `API Key Hash` safely
 
-### Amazon SES
-
-In our Issuer application, once the issuer has approved an application, the applicant will receive the credentials through their email. Hence, we will be using Amazon SES services.
-
-1. Go to AWS Console https://console.aws.amazon.com/
-2. Click on your username near the top right and select My Security Credentials
-3. Under `Access keys for CLI, SDK & API access`, click `Create access key`
-4. Store the `Access key ID` and `Secret access key` safely.
-
-In this application we have used `no-reply@vc-generator.com` as our primary account to send emails to the holders. You will have to update it with your email address. Also make sure that you register that email and verify it before using. 
-
-`Note:` While generating your access key and while registering your email, make sure that you have the same aws-region selected.
 
 ### EmailJS 
 
@@ -86,9 +74,6 @@ REACT_APP_API_KEY=<<Afffinidi's API Key>>
 REACT_APP_API_KEY_HASH=<<Affinidi's API Key Hash>>
 REACT_APP_ENVIRONMENT=prod
 REACT_APP_WALLET_URL=<<URL OF THE WALLET APPLICATION>>
-
-REACT_APP_AWS_ACCESS_KEY_ID=<<AWS's Access Key ID>>
-REACT_APP_AWS_SECRET_ACCESS_KEY=<<AWS's Secret access key>>
 
 REACT_APP_FIREBASE_API_KEY=<<Firebase's apiKey>>
 REACT_APP_FIREBASE_AUTHDOMAIN=<<Firebase's authDomain>>
