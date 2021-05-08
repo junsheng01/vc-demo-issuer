@@ -42,6 +42,16 @@ In this application we have used `no-reply@vc-generator.com` as our primary acco
 
 `Note:` While generating your access key and while registering your email, make sure that you have the same aws-region selected.
 
+### EmailJS 
+
+In case you want to use EmailJS for smtp please follow these steps.
+1. Register on EmailJS
+2. Create a service
+3. Create an template with the following structure
+![Alt text](public/emailjs.png?raw=true "Title")
+4. Save the Service ID, Template ID and User ID in the `.env` file.
+5. You can find the User ID in the Integration menu.
+
 
 ### Firebase
 
@@ -86,6 +96,10 @@ REACT_APP_FIREBASE_PROJECT_ID=<<Firebase's projectId>>
 REACT_APP_FIREBASE_STORAGEBUCKET=<<Firebase's storageBucket>>
 REACT_APP_FIREBASE_MESSAGING_SENDER_ID=<<Firebase's messagingSenderId>>
 REACT_APP_FIREBASE_APP_ID=<<Firebase's appId>>
+
+REACT_APP_EMAIL_JS_SERVICE_ID=<<EmailJs service ID>>
+REACT_APP_EMAIL_JS_TEMPLATE_ID=<<EmailJs template ID>>
+REACT_APP_EMAIL_JS_USER_ID=<<EmailJs user ID>>
 ```
 
 ## How to run
