@@ -48,7 +48,7 @@ In case you want to use EmailJS for smtp please follow these steps.
 1. Register on EmailJS
 2. Create a service
 3. Create an template with the following structure
-![Alt text](public/emailjs.png?raw=true "Title")
+![Alt text](public/emailjs.PNG?raw=true "Title")
 4. Save the Service ID, Template ID and User ID in the `.env` file.
 5. You can find the User ID in the Integration menu.
 
