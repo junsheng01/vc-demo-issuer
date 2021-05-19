@@ -1,14 +1,12 @@
-import {cloudWalletApi, issuerApi, verifierApi} from 'utils/api';
+import {cloudWalletApi, issuerApi} from 'utils/api';
 import {endpoints} from 'constants/endpoints';
 import ApiService from 'utils/apiService';
 import {drivingLicenseVCData, signedDrivingLicenseVC, unsignedDrivingLicenseVC} from 'utils/vc-data-examples/drivinglicense';
-import { access } from 'node:fs';
 
 let mockCloudWalletApiPost: jest.SpyInstance
 let mockCloudWalletApiGet: jest.SpyInstance
 let mockCloudWalletApiDelete: jest.SpyInstance
 let mockIssuerApiPost: jest.SpyInstance
-let mockVerifierApiPost: jest.SpyInstance
 let mockStoreAccessAndDidToken: jest.SpyInstance
 let mockSetAuthorizationBearer: jest.SpyInstance
 let mockSaveAccessTokenToLocalStorage: jest.SpyInstance
@@ -21,7 +19,6 @@ beforeEach(() => {
   mockCloudWalletApiGet = jest.spyOn(cloudWalletApi, 'get');
   mockCloudWalletApiDelete = jest.spyOn(cloudWalletApi, 'delete');
   mockIssuerApiPost = jest.spyOn(issuerApi, 'post');
-  mockVerifierApiPost = jest.spyOn(verifierApi, 'post');
   mockStoreAccessAndDidToken = jest.spyOn(ApiService, 'storeAccessAndDidTokens');
   mockSetAuthorizationBearer = jest.spyOn(ApiService, 'setAuthorizationBearer');
   mockSaveAccessTokenToLocalStorage = jest.spyOn(ApiService, 'saveAccessTokenToLocalStorage');

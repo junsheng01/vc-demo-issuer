@@ -1,5 +1,5 @@
 import React from 'react';
-import {act, fireEvent, getByLabelText, render} from '@testing-library/react';
+import {act, fireEvent, render} from '@testing-library/react';
 import Issuer from 'pages/application/Application';
 import {MemoryRouter} from 'react-router-dom';
 import ApiService from 'utils/apiService';
