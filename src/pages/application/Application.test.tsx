@@ -8,19 +8,27 @@ import {unsignedDrivingLicenseVC} from 'utils/vc-data-examples/drivinglicense';
 import { VCBuildUnsignedOutput } from 'utils/apis';
 
 const getComponentElements = () => {
-  const {getByRole, getByLabelText} = render(<MemoryRouter><Issuer/></MemoryRouter>)
+  const {getByRole, getByLabelText, getByText} = render(<MemoryRouter><Issuer/></MemoryRouter>)
 
   return {
+    emailField: getByLabelText('Email Address:'),
     givenNameField: getByLabelText('Given Name:'),
     familyNameField: getByLabelText('Family Name:'),
     dateOfIssuanceField: getByLabelText('Date of Issuance:'),
     drivingLicenseIDField: getByLabelText('Driving License ID:'),
     drivingClassDropDown: getByLabelText('Driving Class:'),
     clearButton: getByRole('button', {name: 'Clear all fields'}),
-    submitButton: getByRole('button', {name: 'Submit'})
+    submitButton: getByRole('button', {name: 'Submit'}),
+    errorEmailAddress: getByText('Please provide a valid Email Address.'),
+    errorGivenName: getByText('Please provide a Family Name.'),
+    errorFamilyName: getByText('Please provide a Family Name.'),
+    errorIssueDate: getByText('Please provide a Date.'),
+    errorDrivingLicenseID: getByText('Please provide a valid Driving License ID.')
+
   }
 }
 
+const email = 'alex@test.com'
 const givenName = 'Alex';
 const familyName = 'Tan';
 const dateofIssuance = '2019-09-09';
@@ -31,6 +39,7 @@ const unSignedVCOuput: VCBuildUnsignedOutput = {unsignedVC: unsignedDrivingLicen
 describe('Issuance Component Test', () => {
     test('Component renders successfully', () => {
         const {
+            emailField,
             givenNameField,
             familyNameField,
             dateOfIssuanceField,
@@ -40,6 +49,7 @@ describe('Issuance Component Test', () => {
             submitButton
         } = getComponentElements()
         
+        expect(emailField).toBeInTheDocument();
         expect(givenNameField).toBeInTheDocument();
         expect(familyNameField).toBeInTheDocument();
         expect(dateOfIssuanceField).toBeInTheDocument();
@@ -51,17 +61,19 @@ describe('Issuance Component Test', () => {
 
     test('Input fields and validation', async () => {
       const {
+        emailField,
         givenNameField,
         familyNameField,
         dateOfIssuanceField,
         drivingLicenseIDField,
         drivingClassDropDown,
-        submitButton
+        submitButton,
       } = getComponentElements()
 
       jest.spyOn(window, 'alert').mockImplementation(() => {});
       jest.spyOn(ApiService, 'issueUnsignedVC').mockReturnValue(Promise.resolve(unSignedVCOuput))
 
+      fireEvent.change(emailField, { target: {value: email}})
       fireEvent.change(givenNameField, { target: { value: givenName } })
       fireEvent.change(familyNameField, { target: { value: familyName } })
       fireEvent.change(dateOfIssuanceField, { target: { value: dateofIssuance } })
@@ -72,26 +84,24 @@ describe('Issuance Component Test', () => {
         await userEvent.click(submitButton)
       })
 
-      expect(window.alert).toHaveBeenCalledWith(`You have successfully submitted your application. (Unsigned VC successfully created.)`)
+      expect(window.alert).toHaveBeenCalledWith(`You have successfully submitted your application.`)
     })
 
     test('Input fields and validation - Error', async () => {
       const { submitButton } = getComponentElements()
-
-      jest.spyOn(window, 'alert').mockImplementation(() => {});
-      jest.spyOn(ApiService, 'issueUnsignedVC').mockImplementation(() => {
-        throw new Error();
-      });
+      jest.spyOn(ApiService, 'issueUnsignedVC').mockImplementation();
 
       await act(async () => {
         await userEvent.click(submitButton)
       })
 
-      expect(window.alert).toHaveBeenCalledWith(`There has been an issue processing your request. Please check the browser console.`)
+      expect(ApiService.issueUnsignedVC).not.toBeCalled();
+      
     })
 
     test('Clearing fields', async () => {
       const {
+        emailField,
         givenNameField,
         familyNameField,
         dateOfIssuanceField,
@@ -102,6 +112,7 @@ describe('Issuance Component Test', () => {
 
       expect(givenNameField.value).toBe('')
 
+      fireEvent.change(emailField, { target: {value: email}})
       fireEvent.change(givenNameField, { target: { value: givenName } })
       fireEvent.change(familyNameField, { target: { value: familyName } })
       fireEvent.change(dateOfIssuanceField, { target: { value: dateofIssuance } })

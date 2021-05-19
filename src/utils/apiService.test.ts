@@ -1,4 +1,4 @@
-import {cloudWalletApi, issuerApi, verifierApi} from 'utils/api';
+import {cloudWalletApi, issuerApi} from 'utils/api';
 import {endpoints} from 'constants/endpoints';
 import ApiService from 'utils/apiService';
 import {drivingLicenseVCData, signedDrivingLicenseVC, unsignedDrivingLicenseVC} from 'utils/vc-data-examples/drivinglicense';
@@ -7,14 +7,24 @@ let mockCloudWalletApiPost: jest.SpyInstance
 let mockCloudWalletApiGet: jest.SpyInstance
 let mockCloudWalletApiDelete: jest.SpyInstance
 let mockIssuerApiPost: jest.SpyInstance
-let mockVerifierApiPost: jest.SpyInstance
+let mockStoreAccessAndDidToken: jest.SpyInstance
+let mockSetAuthorizationBearer: jest.SpyInstance
+let mockSaveAccessTokenToLocalStorage: jest.SpyInstance
+let mockSaveDidTokenToLocalStorage: jest.SpyInstance
+let mockRemoveAccessTokenFromLocalStorage: jest.SpyInstance
+let mockRemoveDidTokenFromLocalStorage: jest.SpyInstance
 
 beforeEach(() => {
   mockCloudWalletApiPost = jest.spyOn(cloudWalletApi, 'post');
   mockCloudWalletApiGet = jest.spyOn(cloudWalletApi, 'get');
   mockCloudWalletApiDelete = jest.spyOn(cloudWalletApi, 'delete');
   mockIssuerApiPost = jest.spyOn(issuerApi, 'post');
-  mockVerifierApiPost = jest.spyOn(verifierApi, 'post');
+  mockStoreAccessAndDidToken = jest.spyOn(ApiService, 'storeAccessAndDidTokens');
+  mockSetAuthorizationBearer = jest.spyOn(ApiService, 'setAuthorizationBearer');
+  mockSaveAccessTokenToLocalStorage = jest.spyOn(ApiService, 'saveAccessTokenToLocalStorage');
+  mockSaveDidTokenToLocalStorage = jest.spyOn(ApiService, 'saveDidTokenToLocalStorage');
+  mockRemoveAccessTokenFromLocalStorage = jest.spyOn(ApiService, 'removeAccessTokenFromLocalStorage');
+  mockRemoveDidTokenFromLocalStorage = jest.spyOn(ApiService, 'removeDidTokenFromLocalStorage');
 });
 
 describe('ApiService methods', () => {
@@ -43,6 +53,17 @@ describe('ApiService methods', () => {
     await ApiService.logIn(username,password)
 
     expect(mockCloudWalletApiPost).toHaveBeenCalledWith(endpoints.LOGIN, {username, password})
+  })
+
+  test('clientSideLogin method', async () => {
+    ApiService.clientSideLogIn(accessToken, did);
+
+    expect(mockStoreAccessAndDidToken).toBeCalledWith(accessToken, did);
+    expect(mockSetAuthorizationBearer).toBeCalledWith(accessToken);
+
+    expect(mockStoreAccessAndDidToken).toBeCalledTimes(1);
+    expect(mockSetAuthorizationBearer).toBeCalledTimes(1);
+
   })
 
   test('logout method', async () => {
@@ -113,6 +134,26 @@ describe('ApiService methods', () => {
     expect(mockCloudWalletApiDelete).toHaveBeenCalledWith(`${endpoints.WALLET_CREDENTIALS}/${vcId}`)
   })
 
+  test('storeAccessAndDidTokens method', async () => {
+    ApiService.storeAccessAndDidTokens(accessToken, did);
+    expect(mockSaveAccessTokenToLocalStorage).toBeCalledWith(accessToken);
+    expect(mockSaveDidTokenToLocalStorage).toBeCalledWith(did);
+
+    expect(mockSaveAccessTokenToLocalStorage).toBeCalledTimes(1);
+    expect(mockSaveDidTokenToLocalStorage).toBeCalledTimes(1);
+  })
+
+  test('removeAccessAndDidTokens method', async ()=>{
+    ApiService.removeAccessAndDidTokens()
+    expect(mockRemoveAccessTokenFromLocalStorage).toBeCalledTimes(1);
+    expect(mockRemoveDidTokenFromLocalStorage).toBeCalledTimes(1);
+  })
+
+  test('setAuthorizationBearer method', async () => {
+    ApiService.setAuthorizationBearer(accessToken);
+    expect(cloudWalletApi.defaults.headers.common['Authorization']).toMatch(`Bearer ${accessToken}`);
+  })
+
   test('saveAccessTokenToLocalStorage method', async () => {
     jest.spyOn(console, 'error').mockImplementation(() => {})
     jest.spyOn(global.localStorage.__proto__, 'setItem').mockImplementation(() => {
@@ -177,6 +218,44 @@ describe('ApiService methods', () => {
     ApiService.removeDidTokenFromLocalStorage()
 
     expect(console.error).toHaveBeenCalled()
+  })
+
+  test('alertWithBrowserConsole method', () => {
+    jest.spyOn(console, 'log').mockImplementation();
+    jest.spyOn(window, 'alert').mockImplementation();
+    const consoleMessage = 'Test console error message';
+    const alertMessage = 'Test alert error message';
+    ApiService.alertWithBrowserConsole(consoleMessage, alertMessage);
+
+    expect(console.log).toHaveBeenCalled()
+    expect(console.log).toHaveBeenCalledWith(consoleMessage)
+    expect(alert).toHaveBeenCalled()
+    expect(alert).toHaveBeenCalledWith(alertMessage)
+  })
+
+  test("shareCredentials method", async () => {
+    const testClaimID = 'testClaimID';
+    const returnData = {
+      qrCode: "testQRCode",
+      sharingUrl: "testSharingURL"
+    }
+    mockCloudWalletApiPost.mockImplementation(()=>{
+      const a = {
+        data: returnData
+      }
+      return a;
+    })
+    ApiService.shareCredentials(testClaimID);
+    expect(mockCloudWalletApiPost).toBeCalledWith(`${endpoints.WALLET_CREDENTIALS}/${testClaimID}/share`)
+  })
+
+  afterEach(()=>{
+    mockStoreAccessAndDidToken.mockRestore()
+    mockSetAuthorizationBearer.mockRestore()
+    mockSaveAccessTokenToLocalStorage.mockRestore()
+    mockSaveDidTokenToLocalStorage.mockRestore()
+    mockRemoveAccessTokenFromLocalStorage.mockRestore()
+    mockRemoveDidTokenFromLocalStorage.mockRestore()
   })
 })
 
