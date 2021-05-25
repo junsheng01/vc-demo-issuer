@@ -35,7 +35,7 @@ export const sendEmail = (qrCode: string, sharingUrl: string, receiver_email: st
         Destinations: [  receiver_email ],
         Source: "StartUpA Driving License Issuer <" + sender_email + ">"
     }
-
+    console.log(ses.sendRawEmail)
     ses.sendRawEmail(params, (err: any, data: any) => {
         if(err){
             console.log(err)
