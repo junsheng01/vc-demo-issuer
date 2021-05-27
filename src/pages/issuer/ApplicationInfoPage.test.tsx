@@ -2,12 +2,11 @@ import React from 'react'
 import {render, act, waitFor} from '@testing-library/react';
 import userEvent from '@testing-library/user-event'
 import ApplicationInfoPage from './ApplicationInfoPage'
-import {MemoryRouter, useHistory} from 'react-router-dom';
+import {MemoryRouter} from 'react-router-dom';
 import { sendEmail } from 'utils/templates/email';
 import ApiService from 'utils/apiService';
 import {signedDrivingLicenseVC, unsignedDrivingLicenseVC, } from 'utils/vc-data-examples/drivinglicense';
 import { SignCredentialOutput, VCBuildUnsignedOutput, SaveCredentialOutput } from 'utils/apis';
-import firebase from 'utils/firebase/firebase';
 import { routes } from 'constants/routes';
 
 const unSignedVCOuput: VCBuildUnsignedOutput = {unsignedVC: unsignedDrivingLicenseVC};
