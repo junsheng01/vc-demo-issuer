@@ -61,6 +61,7 @@ const ApplicationInfoPage: React.FC<IProps & RouteComponentProps> = (props: IPro
         sendEmail(qrCode, sharingUrl, email)
 
         const db = firebase.firestore();
+        console.log(db)
         // Store the information under Approved Table
         db.collection('drivinglicense-approved').add({ username, payload, applicationID, approved: true });
         // Delete the information under the Pending Approval Table
@@ -78,7 +79,7 @@ const ApplicationInfoPage: React.FC<IProps & RouteComponentProps> = (props: IPro
     <div className='tutorial'>
       <div className='tutorial__step'>
         <h3><strong>Application ID:</strong> {applicationID}</h3>
-        <p><strong>Given Name:</strong> {givenName}</p>
+        <p><strong>Given Name:</strong> {givenName} </p>
         <p><strong>Family Name:</strong> {familyName}</p>
         <p><strong>Date of Issuance:</strong> {issueDate}</p>
         <p><strong>Issuer Organisation:</strong> {issuerOrganization}</p>
