@@ -83,10 +83,9 @@ const Application: React.FC = (): React.ReactElement => {
 
     const handleSubmit = (event: any) => {
       const form = event.currentTarget;
-      if (form.checkValidity() === false) {
         event.preventDefault();
         event.stopPropagation();
-      } else {
+      if (form.checkValidity() === true) {
         issueDrivingLicensePersonVC()
       }
   
