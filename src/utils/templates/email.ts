@@ -69,6 +69,19 @@ export const sendEmail = (
         },
         function (error) {
           console.log('FAILED...', error);
+    const params = {
+        RawMessage: { Data: ses_mail },
+        Destinations: [  receiver_email ],
+        Source: "StartUpA Driving License Issuer <" + sender_email + ">"
+    }
+    console.log(ses.sendRawEmail)
+    ses.sendRawEmail(params, (err: any, data: any) => {
+        if(err){
+            console.log(err)
+        }
+        else {
+            console.log('send');
+            console.log(data)
         }
       );
   }
