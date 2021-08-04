@@ -1,6 +1,6 @@
 import LOCAL_STORAGE_KEY from 'constants/localstorage';
-import {cloudWalletApi, issuerApi} from 'utils/api';
-import {endpoints} from 'constants/endpoints';
+import { cloudWalletApi, issuerApi } from 'utils/api';
+import { endpoints } from 'constants/endpoints';
 import {
   GetSavedCredentialsOutput,
   SaveCredentialInput, SaveCredentialOutput,
@@ -21,8 +21,16 @@ export default class ApiService {
    * Endpoint info: https://cloud-wallet-api.staging.affinity-project.org/api-docs/#/User/SignUp.
    * */
   static async signUp(username: string, password: string) {
-    const signUpParams = { username, password }
-    const {data} =  await cloudWalletApi.post(endpoints.SIGNUP, signUpParams);
+    const signUpParams = {
+      username, password, options: {
+        didMethod: "elem",
+        keyTypes: [
+          "rsa", 'bbs'
+        ]
+      }
+    }
+
+    const { data } = await cloudWalletApi.post(endpoints.SIGNUP, signUpParams);
 
     return data;
   }
@@ -33,7 +41,7 @@ export default class ApiService {
    * */
   static async logIn(username: string, password: string) {
     const loginParams = { username, password }
-    const a =  await cloudWalletApi.post(endpoints.LOGIN, loginParams)
+    const a = await cloudWalletApi.post(endpoints.LOGIN, loginParams)
 
     return a.data;
   }
@@ -62,7 +70,7 @@ export default class ApiService {
    * Endpoint info: https://affinity-issuer.staging.affinity-project.org/api-docs/#/VC/BuildUnsigned.
    * */
   static async issueUnsignedVC(example: VCBuildUnsignedInput) {
-    const {data} = await issuerApi.post<VCBuildUnsignedOutput>(endpoints.VC_BUILD_UNSIGNED, example);
+    const { data } = await issuerApi.post<VCBuildUnsignedOutput>(endpoints.VC_BUILD_UNSIGNED, example);
 
     return data;
   }
@@ -72,7 +80,7 @@ export default class ApiService {
    * Endpoint info: https://cloud-wallet-api.staging.affinity-project.org/api-docs/#/Wallet/SignCredential.
    * */
   static async signVC(input: SignCredentialInput) {
-    const {data} = await cloudWalletApi.post<SignCredentialOutput>(endpoints.WALLET_SIGN_CREDENTIALS, input);
+    const { data } = await cloudWalletApi.post<SignCredentialOutput>(endpoints.WALLET_SIGN_CREDENTIALS, input);
 
     return data;
   }
@@ -94,7 +102,7 @@ export default class ApiService {
    * Endpoint info: https://cloud-wallet-api.staging.affinity-project.org/api-docs/#/Wallet/GetCredentials.
    * */
   static async getSavedVCs() {
-    const {data} = await cloudWalletApi.get<GetSavedCredentialsOutput>(endpoints.WALLET_CREDENTIALS)
+    const { data } = await cloudWalletApi.get<GetSavedCredentialsOutput>(endpoints.WALLET_CREDENTIALS)
 
     return data;
   }
@@ -201,7 +209,7 @@ export default class ApiService {
    * Method for showing the user a generic message when a request fails or an error has been thrown.
    * */
   static alertWithBrowserConsole(consoleMessage: null | string | string[] = null, alertMessage?: string) {
-    if( consoleMessage ) {
+    if (consoleMessage) {
       console.log(consoleMessage);
     }
 
@@ -214,7 +222,7 @@ export default class ApiService {
    * */
   static async shareCredentials(claimID: string) {
     const fullEndpoint = `${endpoints.WALLET_CREDENTIALS}/${claimID}/share`;
-    const a =  await cloudWalletApi.post(fullEndpoint)
+    const a = await cloudWalletApi.post(fullEndpoint)
 
     return a.data;
   }
