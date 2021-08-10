@@ -62,7 +62,7 @@ const LayoutHeaderNavigation = () => {
                   <Nav.Link as={NavLink} activeClassName='is-active' to={routes.ISSUER_LOGIN}>Sign in as admin</Nav.Link>
                 </Nav.Item>
                 <Nav.Item>
-                  <Nav.Link as={NavLink} activeClassName='is-active' to={routes.API_KEY}>API Key</Nav.Link>
+                  <Nav.Link as={NavLink} activeClassName='is-active' to={routes.API_KEY}>API Keyyy</Nav.Link>
                 </Nav.Item>
               </>
             )}
